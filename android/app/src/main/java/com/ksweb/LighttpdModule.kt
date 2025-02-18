@@ -88,7 +88,19 @@ class LighttpdModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     @ReactMethod
     fun startLighttpd(callback: Callback) {
         try {
-            
+          // Path to the Lighttpd binary (assuming it's correctly placed in jniLibs)
+            val serverExecutable = File(reactApplicationContext.filesDir, "lhttpd")
+
+            if (serverExecutable.exists()) {
+                // Start the server process
+                val process = Runtime.getRuntime().exec(serverExecutable.absolutePath)
+
+                // Log the output and errors if needed
+
+                callback.invoke("Lighttpd started successfully")
+            } else {
+                callback.invoke("Lighttpd executable not found!")
+            }
         } catch (e: Exception) {
             callback.invoke("Error starting Lighttpd: ${e.message}")
         }
