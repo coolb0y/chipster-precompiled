@@ -70,7 +70,7 @@ class LighttpdModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
                 "libssl102u.so",
                 "libssl.so",
                 "libxml2.so",
-                "libzip.so"
+                "libzip.so",
             )
 
             // Load each library
@@ -88,14 +88,7 @@ class LighttpdModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     @ReactMethod
     fun startLighttpd(callback: Callback) {
         try {
-            val serverExecutable = File("/data/data/com.ksweb/files/lib/httpd")
-            if (serverExecutable.exists()) {
-                // Assuming you have the Lighttpd binary inside the app's internal storage
-                val process = Runtime.getRuntime().exec(serverExecutable.absolutePath)
-                callback.invoke("Lighttpd started successfully")
-            } else {
-                callback.invoke("Lighttpd executable not found!")
-            }
+            
         } catch (e: Exception) {
             callback.invoke("Error starting Lighttpd: ${e.message}")
         }
