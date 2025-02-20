@@ -12,6 +12,7 @@ class LighttpdModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     init {
         // Load all required shared libraries
         loadLibraries()
+       
     }
 
     private fun loadLibraries() {
@@ -88,23 +89,19 @@ class LighttpdModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     @ReactMethod
     fun startLighttpd(callback: Callback) {
         try {
-          // Path to the Lighttpd binary (assuming it's correctly placed in jniLibs)
-            val serverExecutable = File(reactApplicationContext.filesDir, "lhttpd")
+            // System.loadLibrary("server")
+            // Call the JNI function to start the server
+            startHttpServer()
 
-            if (serverExecutable.exists()) {
-                // Start the server process
-                val process = Runtime.getRuntime().exec(serverExecutable.absolutePath)
-
-                // Log the output and errors if needed
-
-                callback.invoke("Lighttpd started successfully")
-            } else {
-                callback.invoke("Lighttpd executable not found!")
-            }
+            callback.invoke("Lighttpd started successfully")
         } catch (e: Exception) {
             callback.invoke("Error starting Lighttpd: ${e.message}")
         }
     }
+
+    // Native method to start the server (calls the C++ function)
+    external fun startHttpServer()
+
 
     override fun getName(): String {
         return "LighttpdModule"
